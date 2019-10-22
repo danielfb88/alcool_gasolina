@@ -9,6 +9,28 @@ class _HomeState extends State<Home> {
   TextEditingController _controllerAlcool = TextEditingController();
   TextEditingController _controllerGasolina = TextEditingController();
 
+  String _textoResultado = "";
+
+  void _calcular() {
+    double precoAlcool = double.tryParse(_controllerAlcool.text.replaceAll(",", "."));
+    double precoGasolina = double.tryParse(_controllerGasolina.text.replaceAll(",", "."));
+
+    setState(() {
+      if(precoAlcool == null || precoGasolina == null) {
+        _textoResultado = "Número inválido.";
+      } else {
+        if( (precoAlcool / precoGasolina ) >= 0.7 ) {
+          _textoResultado = "Melhor abastecer com gsolina";
+        } else {
+          _textoResultado = "Melhor abastecer com alcool";
+        }
+      }
+    });
+
+    print(precoAlcool);
+    print(precoGasolina);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,17 +90,15 @@ class _HomeState extends State<Home> {
                         fontSize: 20
                     ),
                   ),
-                  onPressed: () {
-
-                  },
+                  onPressed: _calcular,
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 20),
                 child: Text(
-                  "Resultado",
+                  _textoResultado,
                   style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold
                   ),
                 ),
